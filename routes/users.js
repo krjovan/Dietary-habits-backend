@@ -14,6 +14,7 @@ var auth = jwt({
 
 var ctrlProfile = require('../controllers/profile');
 var ctrlAuth = require('../controllers/authentication');
+var ctrlUser = require('../controllers/users');
 
 // profile
 router.get('/profile', auth, ctrlProfile.profileRead);
@@ -24,26 +25,7 @@ router.post('/login', ctrlAuth.login);
 
 
 //retreving data from database
-router.get('/all',(req, res, next)=>{
-	User.find(function(err, users){
-		if(err){
-			res.json(err);
-		}
-		else{
-			res.json(users);
-		}
-	});
-});
-
-router.delete('/delete/:id', (req, res, next)=>{
-    User.remove({_id: req.params.id}, function(err, result){
-        if(err){
-            res.json(err);
-        }
-        else{
-            res.json(result);
-        }
-    });
-  });
+router.get('/all', ctrlUser.getAll);
+router.delete('/delete/:id', ctrlUser.deleteUser);
 
 module.exports = router;
