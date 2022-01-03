@@ -127,6 +127,63 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "USER UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"role\": \"admin\",\r\n    \"newPassword\": \"Marko123!\",\r\n    \"name\": \"Marko Marković\",\r\n    \"email\": \"marko@gmail.com\",\r\n    \"salt\": \"6595eae9bfb25e63b00340165edc57e2\",\r\n    \"hash\": \"4e98c6086ef1e6d054cf1b39a5acba8672edd1e84bd5da34d080da77ffbd0c12c2514b94559436853d0bbe0febc1d136472a51c2446f47c26c09b5f64f038a58\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/update/61c851ac0bdf632a888e31dd",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"update",
+								"61c851ac0bdf632a888e31dd"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "USER HASH",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"currentPassword\": \"Marko123!\",\r\n    \"salt\": \"b866fb4547e0a75bb37723120219cf3d\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/hash",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"hash"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
