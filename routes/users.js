@@ -27,6 +27,7 @@ router.post('/login', ctrlAuth.login);
 //retreving data from database
 router.get('/all', ctrlUser.getAll);
 router.put('/update/:id', ctrlUser.updateUser);
+router.post('/hash', ctrlUser.getHash);
 router.delete('/delete/:id', ctrlUser.deleteUser);
 
 module.exports = router;

@@ -44,6 +44,11 @@ module.exports.updateUser = function(req, res) {
 	});
 };
 
+module.exports.getHash = function(req, res) {
+	res.setHeader('Content-Type', 'application/json');
+	res.end(JSON.stringify({ hash: crypto.pbkdf2Sync(req.body.currentPassword, req.body.salt, 1000, 64, 'sha512').toString('hex')  }));
+};
+
 module.exports.deleteUser = function(req, res) {
   User.remove({_id: req.params.id}, function(err, result){
         if(err) {
