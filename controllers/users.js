@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var crypto = require('crypto');
+var nodemailer = require('nodemailer');
 
 var sendJSONresponse = function(res, status, content) {
   res.status(status);
@@ -85,7 +86,8 @@ module.exports.updateUserByAdmin = function(req, res) {
 	User.findOneAndUpdate({_id: req.params.id},{
 		$set:{
 		  name:req.body.name,
-		  email:req.body.email
+		  email:req.body.email,
+		  role:req.body.role
 		}
 	},
 	function(err,result){
@@ -113,3 +115,56 @@ module.exports.deleteUser = function(req, res) {
         }
     });
 };
+
+function makeid(length) {
+   var result = '';
+   var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+   var charactersLength = characters.length;
+   for ( var i = 0; i < length; i++ ) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+   }
+   return result;
+}
+
+module.exports.resetPassword = function(req, res) {
+	var password = makeid(10);
+	User.findOneAndUpdate({_id: req.body._id},{
+			$set:{
+			  hash: crypto.pbkdf2Sync(password, req.body.salt, 1000, 64, 'sha512').toString('hex')
+			}
+		},
+		function(err,result){
+			if(err) {
+				console.log(err);
+			}
+			else {
+				console.log(result);
+			}
+		});
+	let transport = nodemailer.createTransport({
+		host: 'smtp.mailtrap.io',
+		port: 2525,
+		auth: {
+		   user: '02231501925661',
+		   pass: '61cbb1dce65639'
+		}
+	});
+	var mailOptions = {
+		from: 'no-reply@e-residency.com', // Sender address
+		to: req.body.email,         // List of recipients
+		subject: 'Reset password', // Subject line
+		text: password // Plain text body
+	};
+
+	transport.sendMail(mailOptions, function(err, info) {
+		if (err) {
+		  console.log(err)
+		} else {
+		  console.log(info);
+		  res.status(200);
+		  res.json({
+			"message" : "Password reset successfully!"
+		  });
+		}
+	});
+}
