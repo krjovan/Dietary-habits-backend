@@ -9,13 +9,11 @@ var sendJSONresponse = function(res, status, content) {
 };
 
 module.exports.getAll = function(req, res) {
-  User.find(function(err, users){
-        if(err) {
-            res.json(err);
-        }
-        else {
-            res.json(users);
-        }
+  User.find()
+	.sort({ _id: -1 })
+	.exec(function (err, doc) {
+        if(err) { res.status(500).json(err); return; };
+        res.status(200).json(doc);
     });
 };
 
@@ -167,4 +165,20 @@ module.exports.resetPassword = function(req, res) {
 		  });
 		}
 	});
+}
+
+module.exports.getUsersByPagination = function(req, res) {
+	const pageOptions = {
+		page: parseInt(req.query.page, 10) || 0,
+		limit: parseInt(req.query.limit, 10) || 10
+	}
+
+	User.find()
+	.sort({ _id: -1 })
+    .skip(pageOptions.page * pageOptions.limit)
+    .limit(pageOptions.limit)
+    .exec(function (err, doc) {
+        if(err) { res.status(500).json(err); return; };
+        res.status(200).json(doc);
+    });
 }
