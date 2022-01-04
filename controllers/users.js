@@ -9,7 +9,8 @@ var sendJSONresponse = function(res, status, content) {
 };
 
 module.exports.getAll = function(req, res) {
-  User.find()
+  	const regex = new RegExp(req.query.search, 'i')
+	User.find({name: {$regex: regex}})
 	.sort({ _id: -1 })
 	.exec(function (err, doc) {
         if(err) { res.status(500).json(err); return; };
@@ -148,10 +149,16 @@ module.exports.resetPassword = function(req, res) {
 		}
 	});
 	var mailOptions = {
-		from: 'no-reply@e-residency.com', // Sender address
-		to: req.body.email,         // List of recipients
-		subject: 'Reset password', // Subject line
-		text: password // Plain text body
+		from: 'no-reply@dietary-habits.com',
+		to: req.body.email,
+		subject: 'Reset password',
+		html: `<p>Dear Sir or Madam,</p>
+			   <p>Your password was reset to: <b>${password}</b></p>
+			   <p>After you sign-in to Dietary-habits please change the password from "My profile" section.</p>
+			   <p><i>If you have no connection to Dietary-habits just ignore this email.</i></p>
+			   <p>Dietary-habits team</p>
+			   <p>Email: contact@dietary-habits.com</p>
+			   <p>Web: <a href="http://localhost:4200/home">www.dietary-habits.com</a></p>`
 	};
 
 	transport.sendMail(mailOptions, function(err, info) {
