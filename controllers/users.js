@@ -182,3 +182,11 @@ module.exports.getUsersByPagination = function(req, res) {
         res.status(200).json(doc);
     });
 }
+
+module.exports.numberOfUsers = function(req, res) {
+	User.countDocuments()
+    .exec(function (err, doc) {
+        if(err) { res.status(500).json(err); return; };
+        res.status(200).json({"numberOfUsers":doc});
+    });
+}

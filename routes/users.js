@@ -27,6 +27,7 @@ router.post('/login', ctrlAuth.login);
 //retreving data from database
 router.get('/all', ctrlUser.getAll);
 router.get('/withPagination', ctrlUser.getUsersByPagination);
+router.get('/numberOfUsers', ctrlUser.numberOfUsers);
 router.post('/add', ctrlUser.addUser);
 router.put('/update/:id', ctrlUser.updateUser);
 router.put('/admin/update/:id', ctrlUser.updateUserByAdmin);
