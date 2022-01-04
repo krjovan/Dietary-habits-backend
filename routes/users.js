@@ -28,6 +28,7 @@ router.post('/login', ctrlAuth.login);
 router.get('/all', ctrlUser.getAll);
 router.post('/add', ctrlUser.addUser);
 router.put('/update/:id', ctrlUser.updateUser);
+router.put('/admin/update/:id', ctrlUser.updateUserByAdmin);
 router.post('/hash', ctrlUser.getHash);
 router.delete('/delete/:id', ctrlUser.deleteUser);
 

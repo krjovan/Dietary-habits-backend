@@ -81,6 +81,23 @@ module.exports.updateUser = function(req, res) {
 	});
 };
 
+module.exports.updateUserByAdmin = function(req, res) {
+	User.findOneAndUpdate({_id: req.params.id},{
+		$set:{
+		  name:req.body.name,
+		  email:req.body.email
+		}
+	},
+	function(err,result){
+		if(err) {
+			res.json(err);
+		}
+		else {
+			res.json(result);
+		}	
+	});
+};
+
 module.exports.getHash = function(req, res) {
 	res.setHeader('Content-Type', 'application/json');
 	res.end(JSON.stringify({ hash: crypto.pbkdf2Sync(req.body.currentPassword, req.body.salt, 1000, 64, 'sha512').toString('hex')  }));
